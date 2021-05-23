@@ -39,21 +39,21 @@ print(animalList)
 #    time.sleep(1)
 # print('BLAST OFF')
 
-# state = input('What state do you live in')
-# if state == 'California' or state == 'Oregon' or state == 'Washington' :
-#    print('We suggest you go for a coastal drive')
-# else:
-#    print('You may be better off skiing')
+state = input('What state do you live in')
+if state == 'California' or state == 'Oregon' or state == 'Washington' :
+   print('We suggest you go for a coastal drive')
+else:
+   print('You may be better off skiing')
 
-# q = input('Do you have an upcoming vacation')
-# if q == 'yes':
-#    grade = int(input('What grade are you in'))
-#    if grade == 11:
-#        print('Great time to study for SAT')
-#    else:
-#        print('have fun then')
-# elif q == 'no':
-#     print('have a plesant vacation')
+q = input('Do you have an upcoming vacation')
+if q == 'yes':
+   grade = int(input('What grade are you in'))
+   if grade == 11:
+       print('Great time to study for SAT')
+   else:
+       print('have fun then')
+elif q == 'no':
+    print('have a plesant vacation')
 
 
 
