@@ -49,6 +49,7 @@ class dog:
 myDog = dog('arty', 'brown', 'yellow', 'terrier', '5')
 dog2 = dog('sparky', 'blue', 'black', 'lab', '3')
 dog3 = dog('scout', 'black', 'white', 'terrier-mix', '1')
+
 myDog.show_info()
 dog2.show_info()
 dog3.show_info()
@@ -78,7 +79,17 @@ class state:
         self.capital_city = capital_city
         self.population = population
     def show_info(self):
-        print('The state of ', self.name, 'has cap. city of ', self.capital_city, 'with a pop of ', self.population)
+        print('The state of', self.name, 'has cap. city of', self.capital_city, 'with a pop of ', self.population)
+    # def city(self, stateInput):
+    #     for each in stateList:
+    #         if stateInput == each.name:
+    #             return self.capital_city
+    #             print(each.city())
+    #         else:
+    #             print('Sorry, that name wasn\'t in the list!')
+    
+        
+    
 
 state1 = state('California', 'Sacremento', '15000')
 state2 = state('Nevada', 'Carson City', '4000')
@@ -92,8 +103,32 @@ for each in stateList:
     print(each.show_info())
 
 stateInput = input('Enter a state name in list: ')
+
 for each in stateList:
     if stateInput == each.name:
         print(each.show_info())
-else:
-    print('Sorry, that name wasn\'t in the list!')
+    else:
+        for i in range(1,2,1):
+
+            print(i)
+
+
+class shopping:
+    def __init__(self, storeName, cart):
+        self.storeName = storeName
+        self.cart = cart
+    def show_info(self):
+        print(self.storeName, 'cart: ', self.cart)
+
+info = shopping('myShop', {'plants': 15, 'hoodie': 10, 'iPhone': 200})
+
+nameInput = input('Enter in the name of a new item: ')
+priceInput = int(input('Enter in a price for item: '))
+
+
+info.show_info()
+
+
+
+
+
