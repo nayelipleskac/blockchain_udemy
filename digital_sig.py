@@ -13,6 +13,7 @@ def generate_keys():
 
 
 def sign(message, private):
+    message = bytes(str(message), 'utf-8')
     sig = private.sign(
         message,
         padding.PSS(
@@ -25,7 +26,7 @@ def sign(message, private):
 
 
 def verify(message, sig, public):
-    message - bytes(message, 'utf-8')
+    message = bytes(str(message), 'utf-8')
     try: 
         public.verify(
             sig,
