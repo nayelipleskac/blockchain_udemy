@@ -256,6 +256,63 @@ if userInput == 'remove':
 
 info.show_info()
 
+class zoo:
+    def __init__(self, zooName, population, food, habitat):
+        self.zooName = zooName
+        self.population = population
+        self.food = food
+        self.habitat = habitat
+    def addAnimal(self):
+        self.population[addName] = addPop
+        self.food[addName] = addFood
+        self.habitat[addName] = addHab
+    def removeAnimal(self):
+        self.population.pop(removeName)
+        self.food.pop(removeName)
+        self.habitat.pop(removeName)
+    def show_info(self):
+        print(self.zooName, ':')
+        for each in self.population:
+            # print('populations:')
+            print(each + ':' , self.population[each])
+        for each in self.food:
+            # print('foods:')
+            print(each + ':' , self.food[each])
+        for each in self.habitat:
+            # print('habitats:')
+            print(each + ':' ,self.habitat[each])
+
+            # print(self.zooName, self.population, self.food, self.habitat
+
+animal1 = 'zebra'
+animal2 = 'fish'
+animal3 = 'red panda'
+
+info = zoo('MyZoo', {animal1: 10, animal2: 500, animal3: 2}, {animal1: 'grass', animal2: 'insects', animal3: 'grass'} , {animal1: 'grasslands', animal2: 'pond', animal3: 'jungle'})
+
+
+userInput = input('Do you want to add or remove an animal? ')
+
+if userInput == 'add':
+  addName = input('Enter in the name of a new animal: ')
+  if addName in info.population:
+    print('This animal is already in the zoo!')
+  else:
+    addPop = int(input('Enter in a pop value: '))
+    addFood = input('Enter in a food value: ')
+    addHab = input('Enter in a habitat: ')
+    info.addAnimal()
+    info.show_info()
+if userInput == 'remove':
+  for keys in info.population:
+    print(keys)
+  removeName = input('What animal would you like to remove? ')
+  if removeName not in info.population:
+      print('That animal is not in the zoo!')
+  info.removeAnimal()
+  info.show_info()
+
+
 # myDict = {'zebra': 10, 'fish': 500}
 # print(myDict.keys())
 # #printing keys
