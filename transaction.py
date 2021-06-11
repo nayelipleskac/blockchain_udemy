@@ -47,7 +47,7 @@ class Tx:
                 if digital_sig.verify(message, s, addr):
                     found = True
             if not found:
-                return False
+                return False 
         for addr, amount in self.outputs:
             if amount < 0:
                 return False
