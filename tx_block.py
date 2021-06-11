@@ -4,6 +4,8 @@ from blockchain import CBlock
 from digital_sig import generate_keys, sign, verify
 import pickle
 from transaction import Tx
+from cryptography.hazmat.primitives import serialization
+
 
 class TxBlock(CBlock):
     def __init__(self, previousBlock):
@@ -25,15 +27,15 @@ if __name__ == "__main__":
 
     print(Tx1.is_valid())
 
-    message = b"Some text"
-    sig = sign(message, pr1)
-
-    saveFile = open('save.dat', 'wb')
-    #Tx1 is being pickles, saveFile is the endpoint
+    
+    #Tx1 is being pickled, saveFile is the endpoint
+    saveFile = open('tx.dat', 'wb')
     pickle.dump(Tx1, saveFile)
     saveFile.close()
 
-    loadFile = open('save.dat', 'rb')
-    nexTx = pickle.load(loadFile)
+    
 
+    loadFile = open('tx.dat', 'rb')
+    nexTx = pickle.load(loadFile)
     print(nexTx.is_valid())
+    loadFile.close()
