@@ -34,7 +34,6 @@ if __name__ == "__main__":
     saveFile.close()
 
     
-
     loadFile = open('tx.dat', 'rb')
     nexTx = pickle.load(loadFile)
     print(nexTx.is_valid())
