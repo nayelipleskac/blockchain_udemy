@@ -55,7 +55,6 @@ class Tx:
         if total_out > total_in:
             return False
 
-        
         return True
     def __gather(self):
         data = []
@@ -63,7 +62,22 @@ class Tx:
         data.append(self.outputs)
         data.append(self.reqd)
         return data
-
+    #used when converting data to string, by printing it
+    def __repr__(self):
+        reprstr = 'INPUTS:\n'
+        for addr, amt in self.inputs:
+            reprstr += str(amt) + ' from ' + str(addr) + '\n'
+        reprstr += 'OUTPUTS:\n'
+        for addr, amt in self.outputs:
+            reprstr += str(amt) + ' to ' + str(addr) + '\n'
+        reprstr += 'REQR:\n'
+        for r in self.reqd:
+            reprstr += str(r) + '\n'
+        reprstr += 'SIGS:\n'
+        for s in self.sigs:
+            reprstr += str(s) + '\n'
+        reprstr += 'ENd\n'
+        return reprstr
 if __name__ == '__main__':
     pr1, pu1 = digital_sig.generate_keys()  
     pr2, pu2 = digital_sig.generate_keys()  

@@ -9,11 +9,13 @@ from cryptography.hazmat.primitives import serialization
 
 class TxBlock(CBlock):
     def __init__(self, previousBlock):
-        pass
+        super(TxBlock, self).__init__([], previousBlock)
     def addTx(self, Tx_in):
-        pass
+        self.data.append(Tx_in)
     def is_valid(self):
-        return False
+        if not super(TxBlock, self).is_valid():
+            return False
+        return True
 
 if __name__ == "__main__":
     pr1, pu1 = generate_keys()
@@ -25,7 +27,7 @@ if __name__ == "__main__":
     Tx1.add_output(pu2, 1)
     Tx1.sign(pr1)
 
-    if Tx.is_valid: 
+    if Tx1.is_valid: 
         print('Success, Tx is valid!')
     
     #Tx1 is being pickled, saveFile is the endpoint
@@ -67,11 +69,13 @@ if __name__ == "__main__":
     
 
     savefile = open('block.dat', 'wb')
-    pickle.dump(B1)
+    pickle.dump(B1, savefile)
     savefile.close()
 
-    loadFile = open('block.dat', 'wb')
+    loadFile = open('block.dat', 'rb')
     load_B1 = pickle.load(loadFile)
+
+    print(bytes(str(load_B1.data), 'utf8'))
 
     load_B1.is_valid()
     for b in [root, B1, load_B1, load_B1.previousBlock]:
@@ -79,3 +83,16 @@ if __name__ == "__main__":
             print('Success, valid block')
         else:
             print('error, Bad block!')
+
+    B2 = TxBlock(B1)
+    Tx5 = Tx()
+    Tx5.add_input(pu3, 1)
+    Tx5.add_output(pu1, 100)
+    Tx5.sign9=(pr3)
+
+    load_B1.previousBlock.addTx(Tx4)
+    for b in [B2, load_B1]:
+        if b.is_valid():
+            print('Error, bad blocks verified!')
+        else:
+            print('success, bad blocks detected!')
