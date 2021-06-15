@@ -101,3 +101,45 @@ if __name__ == "__main__":
             print('Error, bad blocks verified!')
         else:
             print('Success, bad blocks detected!')
+
+
+    #Testing mining reward and tx fees
+    pr4, pu4 = generate_keys()
+
+    B3 = TxBlock(B2)
+    B3.addTx(Tx2)
+    B3.addTx(Tx3)    
+    B3.addTx(Tx4)
+    Tx6 = Tx()
+    Tx6.add_output(pu4, 25)
+    B3.addTx(Tx6)
+    if B3.is_valid():
+        print('Success, block reward succeeds!')
+    else:
+        print('Error, block reward fail')
+    
+    B4 = TxBlock(B3)
+    B4.addTx(Tx2)
+    B4.addTx(Tx3)    
+    B4.addTx(Tx4)
+    Tx7= Tx()
+    Tx7.add_output(pu4, 25.2 )
+    B4.addTx(Tx6)
+    if B4.is_valid():
+        print('Success, tx fees succeeds!')
+    else:
+        print('Error, tx fees fail')
+
+    #Greedy miner
+    B5 = TxBlock(B4)
+    B5.addTx(Tx2)
+    B5.addTx(Tx3)    
+    B5.addTx(Tx4)
+    Tx8= Tx()
+    Tx8.add_output(pu4, 26.2 )
+    B5.addTx(Tx8)
+    if not B5.is_valid():
+        print('Success, greedy miner detected!')
+    else:
+        print('Error, greedy miner not detected')
+
