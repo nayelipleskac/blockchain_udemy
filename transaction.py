@@ -76,7 +76,7 @@ class Tx:
         reprstr += 'SIGS:\n'
         for s in self.sigs:
             reprstr += str(s) + '\n'
-        reprstr += 'ENd\n'
+        reprstr += 'ENd:\n'
         return reprstr
 if __name__ == '__main__':
     pr1, pu1 = digital_sig.generate_keys()  

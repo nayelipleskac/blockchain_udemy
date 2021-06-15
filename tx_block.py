@@ -15,6 +15,9 @@ class TxBlock(CBlock):
     def is_valid(self):
         if not super(TxBlock, self).is_valid():
             return False
+        for tx in self.data:
+            if not tx.is_valid():
+                return False
         return True
 
 if __name__ == "__main__":
@@ -75,7 +78,7 @@ if __name__ == "__main__":
     loadFile = open('block.dat', 'rb')
     load_B1 = pickle.load(loadFile)
 
-    print(bytes(str(load_B1.data), 'utf8'))
+    # print(bytes(str(load_B1.data), 'utf8'))
 
     load_B1.is_valid()
     for b in [root, B1, load_B1, load_B1.previousBlock]:
@@ -88,11 +91,13 @@ if __name__ == "__main__":
     Tx5 = Tx()
     Tx5.add_input(pu3, 1)
     Tx5.add_output(pu1, 100)
-    Tx5.sign9=(pr3)
+    Tx5.sign(pr3)
+    B2.addTx(Tx5)
+    # print(Tx5.is_valid())
 
     load_B1.previousBlock.addTx(Tx4)
     for b in [B2, load_B1]:
         if b.is_valid():
             print('Error, bad blocks verified!')
         else:
-            print('success, bad blocks detected!')
+            print('Success, bad blocks detected!')
