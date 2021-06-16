@@ -5,10 +5,13 @@ from digital_sig import generate_keys, sign, verify
 import pickle
 from transaction import Tx
 from cryptography.hazmat.primitives import serialization
+import time
+
+
 reward = 25.0
 
-
 class TxBlock(CBlock):
+    nonce = 'AAAAAA'
     def __init__(self, previousBlock):
         super(TxBlock, self).__init__([], previousBlock)
     def addTx(self, Tx_in):
@@ -32,6 +35,10 @@ class TxBlock(CBlock):
         if total_out - total_in - reward > 0.0000000001:
             return False 
         return True
+    def good_nonce(self):
+        return False
+    def find_nonce(self):
+        return self.nonce
 
 if __name__ == "__main__":
     pr1, pu1 = generate_keys()
@@ -73,6 +80,16 @@ if __name__ == "__main__":
     Tx3.add_output(pu1, 1)
     Tx3.sign(pr3)
     B1.addTx(Tx2)
+    start = time.time()
+    print(B1.find_nonce())
+    elapsed = time.time() - start
+    print('elapsed time: ' + str(elapsed) + 'seconds')
+    if elapsed < 60:
+        print('Error, mining is too fast') 
+    if B1.good_nonce():
+        print('Success! Nonce is good')
+    else:
+        print('ERROR! bad nonce')
 
     Tx4 = Tx()
     Tx4.add_input(pu1, 1)
@@ -82,7 +99,6 @@ if __name__ == "__main__":
     Tx4.sign(pr3)
     B1.addTx(Tx4)
 
-    
 
     savefile = open('block.dat', 'wb')
     pickle.dump(B1, savefile)
@@ -100,14 +116,18 @@ if __name__ == "__main__":
         else:
             print('error, Bad block!')
 
+    if B1.good_nonce():
+        print('Success! Nonce is good after save and load')
+    else:
+        print('ERROR! bad nonce after load')
+
+
     B2 = TxBlock(B1)
     Tx5 = Tx()
     Tx5.add_input(pu3, 1)
     Tx5.add_output(pu1, 100)
     Tx5.sign(pr3)
     B2.addTx(Tx5)
-    # print(Tx5.is_valid())
-
     load_B1.previousBlock.addTx(Tx4)
     for b in [B2, load_B1]:
         if b.is_valid():
