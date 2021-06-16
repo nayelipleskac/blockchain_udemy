@@ -13,7 +13,7 @@ class TxBlock(CBlock):
         super(TxBlock, self).__init__([], previousBlock)
     def addTx(self, Tx_in):
         self.data.append(Tx_in)
-    def count_totals(self):
+    def __count_totals(self):
         total_in = 0
         total_out = 0
         for tx in self.data:
@@ -21,7 +21,6 @@ class TxBlock(CBlock):
                 total_in += amt
             for addr, amt in tx.outputs:
                 total_out += amt
-
         return total_in, total_out
     def is_valid(self):
         if not super(TxBlock, self).is_valid():
@@ -29,8 +28,8 @@ class TxBlock(CBlock):
         for tx in self.data:
             if not tx.is_valid():
                 return False
-        total_in, total_out = self.count_totals
-        if total_in > total_out + reward:
+        total_in, total_out = self.__count_totals()
+        if total_out - total_in - reward > 0.0000000001:
             return False 
         return True
 
@@ -149,8 +148,8 @@ if __name__ == "__main__":
     B5.addTx(Tx2)
     B5.addTx(Tx3)    
     B5.addTx(Tx4)
-    Tx8= Tx()
-    Tx8.add_output(pu4, 26.2 )
+    Tx8 = Tx()
+    Tx8.add_output(pu4, 26.2)
     B5.addTx(Tx8)
     if not B5.is_valid():
         print('Success, greedy miner detected!')
