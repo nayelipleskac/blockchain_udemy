@@ -5,6 +5,7 @@ from digital_sig import generate_keys, sign, verify
 import pickle
 from transaction import Tx
 from cryptography.hazmat.primitives import serialization
+reward = 25.0
 
 
 class TxBlock(CBlock):
@@ -12,12 +13,25 @@ class TxBlock(CBlock):
         super(TxBlock, self).__init__([], previousBlock)
     def addTx(self, Tx_in):
         self.data.append(Tx_in)
+    def count_totals(self):
+        total_in = 0
+        total_out = 0
+        for tx in self.data:
+            for addr, amt in tx.inputs:
+                total_in += amt
+            for addr, amt in tx.outputs:
+                total_out += amt
+
+        return total_in, total_out
     def is_valid(self):
         if not super(TxBlock, self).is_valid():
             return False
         for tx in self.data:
             if not tx.is_valid():
                 return False
+        total_in, total_out = self.count_totals
+        if total_in > total_out + reward:
+            return False 
         return True
 
 if __name__ == "__main__":
