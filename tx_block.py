@@ -4,11 +4,13 @@ from blockchain import CBlock
 from digital_sig import generate_keys, sign, verify
 import pickle
 from transaction import Tx
+from cryptography.hazmat.primitives import hashes
+import time, random
 from cryptography.hazmat.primitives import serialization
-import time
-
 
 reward = 25.0
+leading_zeros = 2
+next_char_limit = 20
 
 class TxBlock(CBlock):
     nonce = 'AAAAAA'
@@ -36,9 +38,24 @@ class TxBlock(CBlock):
             return False 
         return True
     def good_nonce(self):
-        return False
+        digest = hashes.Hash(hashes.SHA256())
+        digest.update(bytes(str(self.data), 'utf8')) 
+        digest.update(bytes(str(self.previousHash), 'utf8'))
+        digest.update(bytes(str(self.nonce), 'utf8'))
+        thisHash = digest.finalize()
+        # print(str(thisHash[:leading_zeros]) + '--' + 'b- 0' )
+
+        if thisHash[:leading_zeros] != bytes(''.join([ '\x4f' for i in range(leading_zeros)]), 'utf8'):
+            return False 
+        return int(thisHash[leading_zeros]) < next_char_limit 
+    
     def find_nonce(self):
-        return self.nonce
+        for i in range(1000000):
+            self.nonce = ''.join([
+                chr(random.randint(0, 255)) for i in range(10*leading_zeros)])
+            if self.good_nonce():
+                return self.nonce
+        return None
 
 if __name__ == "__main__":
     pr1, pu1 = generate_keys()
@@ -80,6 +97,15 @@ if __name__ == "__main__":
     Tx3.add_output(pu1, 1)
     Tx3.sign(pr3)
     B1.addTx(Tx2)
+    
+
+    Tx4 = Tx()
+    Tx4.add_input(pu1, 1)
+    Tx4.add_output(pu2, 1)
+    Tx4.add_reqd(pu3)
+    Tx4.sign(pr1)
+    Tx4.sign(pr3)
+    B1.addTx(Tx4)
     start = time.time()
     print(B1.find_nonce())
     elapsed = time.time() - start
@@ -90,14 +116,6 @@ if __name__ == "__main__":
         print('Success! Nonce is good')
     else:
         print('ERROR! bad nonce')
-
-    Tx4 = Tx()
-    Tx4.add_input(pu1, 1)
-    Tx4.add_output(pu2, 1)
-    Tx4.add_reqd(pu3)
-    Tx4.sign(pr1)
-    Tx4.sign(pr3)
-    B1.addTx(Tx4)
 
 
     savefile = open('block.dat', 'wb')
