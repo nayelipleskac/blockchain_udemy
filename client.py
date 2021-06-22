@@ -4,9 +4,13 @@ from tx_block import TxBlock
 from transaction import Tx
 import digital_sig
 import pickle
+import socket
 TCP_PORT = 5005
 
 def sendBlock(ip_addr, blk):
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect((ip_addr, TCP_PORT))
+    s.sendBlock(blk)
     return False
 
 if __name__ == '__main__':
@@ -31,7 +35,7 @@ if __name__ == '__main__':
     B1.addTx(Tx2)
 
     sendBlock('localhost', B1)
-    
+
 
 
 
