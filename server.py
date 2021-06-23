@@ -9,7 +9,7 @@ def recvObj(ip_addr):
     s.bind((ip_addr, TCP_PORT))
     s.listen()
     new_sock, addr = s.accept()
-    
+
     return new_sock.recv
 if __name__ == "__main__":
     newB = recvObj('localhost',  )
@@ -39,3 +39,6 @@ if __name__ == "__main__":
             print('Success. output value matches')
     else:
         print('Error. output value wrong for Block 1, tx')
+    
+    newTx = recvObj('localhost')
+    print(newTx)
