@@ -1,20 +1,32 @@
 #Server.py
 from tx_block import TxBlock
 import socket
+import pickle
 
 TCP_PORT = 5005
+BUFFER_SIZE = 1024
 
-def recvObj(ip_addr):
+def newConnection(ip_addr):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.bind((ip_addr, TCP_PORT))
     s.listen()
-    new_sock, addr = s.accept()
+    return s
 
-    return new_sock.recv
+def recvObj(socket):
+    new_sock, addr = socket.accept()
+    all_data = b''
+    while True:
+        data = new_sock.recv(BUFFER_SIZE)
+        if not data: break
+        all_data = all_data + data
+    return pickle.loads(all_data)
+
+
 if __name__ == "__main__":
-    newB = recvObj('localhost',  )
+    s = newConnection('192.168.0.193')
+    newB = recvObj(s)
+    print(newB.data[0])
     print(newB.data[1])
-    print(newB.data[2])
     if (newB.is_valid()):
         print('Success. Tx is valid')
     else:
@@ -40,5 +52,5 @@ if __name__ == "__main__":
     else:
         print('Error. output value wrong for Block 1, tx')
     
-    newTx = recvObj('localhost')
+    newTx = recvObj(s)
     print(newTx)

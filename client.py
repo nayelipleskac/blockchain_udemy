@@ -5,12 +5,15 @@ from transaction import Tx
 import digital_sig
 import pickle
 import socket
+
 TCP_PORT = 5005
 
 def sendBlock(ip_addr, blk):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((ip_addr, TCP_PORT))
-    s.sendBlock(blk)
+    data = pickle.dump(blk)
+    s.send(data)
+    s.close()
     return False
 
 if __name__ == '__main__':
@@ -34,9 +37,9 @@ if __name__ == '__main__':
     B1.addTx(Tx1)
     B1.addTx(Tx2)
 
-    sendBlock('192.168.0.193', B1)
+    sendBlock('localhost', B1)
 
-    sendBlock('192.168.0.193', Tx2)
+    sendBlock('localhost', Tx2)
 
 
 
